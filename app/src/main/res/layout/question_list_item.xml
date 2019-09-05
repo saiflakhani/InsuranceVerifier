@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="25dp"
+    android:animateLayoutChanges="true"
+    android:padding="10dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Question 1"
+        android:maxLines="5"
+        android:layout_marginRight="35dp"
+        android:layout_marginEnd="35dp"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:id="@+id/tVQuestionNumber"/>
+
+    <ImageView
+        android:id="@+id/iVAttempted"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@id/tVQuestionNumber"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/done_button"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/rLAnswer"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_below="@id/tVQuestionNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iVClose"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+
+            android:src="@mipmap/fe0abd829d" />
+
+
+
+        <EditText
+            android:id="@+id/eTAnswer"
+            android:layout_below="@id/iVClose"
+            android:hint="Answer"
+            android:imeOptions="actionDone"
+            android:layout_toLeftOf="@id/btnSave"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_below="@+id/iVClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="Save"
+            android:layout_centerVertical="true"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "77322872576",
+    "firebase_url": "https://insuranceverifier-1e7f5.firebaseio.com",
+    "project_id": "insuranceverifier-1e7f5",
+    "storage_bucket": "insuranceverifier-1e7f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77322872576:android:593e7d58750a1358",
+        "android_client_info": {
+          "package_name": "com.quicsolv.insurance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77322872576-mitvnreomd34b2fd1k0oae7jkairko44.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quicsolv.insurance",
+            "certificate_hash": "9393b9fdf2ffb7db5dffe692895964cce2cd3e34"
+          }
+        },
+        {
+          "client_id": "77322872576-1342sv1g1pjur0or95r0t19s76456kd5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVQTwzZQQx9S51KLgervPTa3BGdtTaMnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77322872576-1342sv1g1pjur0or95r0t19s76456kd5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

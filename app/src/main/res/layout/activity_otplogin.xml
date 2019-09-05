@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/edittext_background"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:src="@drawable/exide_logo"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/iVlogo"
+        android:layout_margin="20dp"
+        />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tVphoneHeader"
+        android:layout_centerVertical="true"
+        android:text="Enter your Phone Number"/>
+
+    <EditText
+        android:textSize="18sp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+
+        android:inputType="phone"
+        android:id="@+id/eTphNo"
+        android:layout_below="@+id/tVphoneHeader"
+        android:layout_marginTop="10dp"
+        android:hint="987654321"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/eTphNo"
+        android:text="+91"
+        android:textSize="18sp"
+        android:layout_alignBaseline="@+id/eTphNo"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnProceedOtp"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:layout_below="@+id/eTphNo"
+        android:layout_centerHorizontal="true"
+        android:text="Proceed"
+        android:layout_marginTop="10dp"/>
+
+
+</RelativeLayout>

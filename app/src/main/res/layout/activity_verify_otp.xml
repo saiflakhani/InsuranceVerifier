@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/edittext_background"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:src="@drawable/exide_logo"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/iVlogo"
+        android:layout_margin="20dp"
+        />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tVphoneHeader"
+        android:layout_centerVertical="true"
+        android:text="Enter Verification OTP"/>
+
+    <EditText
+        android:textSize="18sp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:inputType="number"
+        android:id="@+id/eTphNo"
+        android:layout_below="@+id/tVphoneHeader"
+        android:layout_marginTop="10dp"
+        android:hint="6 digit OTP"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnProceedOtp"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:layout_below="@+id/eTphNo"
+        android:layout_centerHorizontal="true"
+        android:text="Proceed"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnResendOtp"
+        android:text="Didn't receive an OTP?"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnResendOtp"
+        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="Resend"
+        />
+
+
+</RelativeLayout>
