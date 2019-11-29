@@ -18,15 +18,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.quicsolv.insurance.MainActivity;
 import com.quicsolv.insurance.R;
+import com.quicsolv.insurance.pojo.PhotoList;
 import com.quicsolv.insurance.pojo.PhotoVO;
 
 import java.util.ArrayList;
 
-public class PhotosAdapter extends ArrayAdapter<PhotoVO> {
+public class PhotosAdapter extends ArrayAdapter<PhotoList> {
 
-    private ArrayList<PhotoVO> dataSet;
-    Context mContext;
+    private ArrayList<PhotoList> dataSet;
+    private Context mContext;
 
     // View lookup cache
     private static class ViewHolder {
@@ -35,7 +40,7 @@ public class PhotosAdapter extends ArrayAdapter<PhotoVO> {
         Button btnUpload;
     }
 
-    public PhotosAdapter(ArrayList<PhotoVO> data, Context context) {
+    public PhotosAdapter(ArrayList<PhotoList> data, Context context) {
         super(context, R.layout.question_list_item, data);
         this.dataSet = data;
         this.mContext=context;
@@ -49,7 +54,7 @@ public class PhotosAdapter extends ArrayAdapter<PhotoVO> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        PhotoVO s1 = dataSet.get(position);
+        PhotoList s1 = dataSet.get(position);
         //Log.d("Question", s1.getQuestionText());
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
@@ -63,7 +68,7 @@ public class PhotosAdapter extends ArrayAdapter<PhotoVO> {
             convertView = inflater.inflate(R.layout.photo_list_item, parent, false);
             viewHolder.tVPhotoDesc = (TextView) convertView.findViewById(R.id.tVphotoDesc);
             //viewHolder.eTAnswerText = (EditText) convertView.findViewById(R.id.eTAnswer);
-            viewHolder.iVPhoto = (ImageView)convertView.findViewById(R.id.iVPhoto);
+            viewHolder.iVPhoto = (ImageView) convertView.findViewById(R.id.iVPhoto);
 
             //viewHolder.iVattempted.setVisibility(View.GONE);
             //viewHolder.txtVersion = (TextView) convertView.findViewById(R.id.version_number);
@@ -83,8 +88,10 @@ public class PhotosAdapter extends ArrayAdapter<PhotoVO> {
         //viewHolder.iVattempted.setVisibility(View.INVISIBLE);
 
         try {
+//            viewHolder.tVPhotoDesc.setText(s1.getDescription());
+//            viewHolder.iVPhoto.setImageBitmap(StringToBitMap(s1.getPhoto()));
+            Glide.with(mContext).load(MainActivity.BASE_URL + s1.getPath()).apply(new RequestOptions().centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL)).thumbnail(0.5f).into(viewHolder.iVPhoto);
             viewHolder.tVPhotoDesc.setText(s1.getDescription());
-            viewHolder.iVPhoto.setImageBitmap(StringToBitMap(s1.getPhoto()));
         }catch (NullPointerException e){
             //Toast.makeText(getContext(),"An error occurred",Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -94,14 +101,14 @@ public class PhotosAdapter extends ArrayAdapter<PhotoVO> {
     }
 
 
-    public Bitmap StringToBitMap(String encodedString){
-        try {
-            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
+//    public Bitmap StringToBitMap(String encodedString){
+//        try {
+//            byte [] encodeByte= Base64.decode(encodedString,Base64.DEFAULT);
+//            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+//            return bitmap;
+//        } catch(Exception e) {
+//            e.getMessage();
+//            return null;
+//        }
+//    }
 }

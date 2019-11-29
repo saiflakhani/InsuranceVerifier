@@ -42,11 +42,11 @@ public class TasksFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
         CheckListActivity.whichList = 2;
-        pullToRefresh = (SwipeRefreshLayout)rootView.findViewById(R.id.pullToRefresh);
+        pullToRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(pullToRefreshListener);
         //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
         int position = getArguments().getInt("CurPos", 0);
-        adapter = new TaskAdapter(curList, getActivity());
+        adapter = new TaskAdapter(curList, getActivity(), getActivity());
         //Log.v("LIST -->", "" + curList.size());
         ListView lVTasks = rootView.findViewById(R.id.lVTasks);
         lVTasks.setAdapter(adapter);

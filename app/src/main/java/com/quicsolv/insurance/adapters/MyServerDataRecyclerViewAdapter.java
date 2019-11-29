@@ -4,16 +4,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.quicsolv.insurance.CheckListActivity;
 import com.quicsolv.insurance.R;
+import com.quicsolv.insurance.SplashScreen;
 import com.quicsolv.insurance.fragments.ServerDataFragment.OnListFragmentInteractionListener;
 
 import com.quicsolv.insurance.pojo.ApplicantDataVO;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
+import java.util.Locale;
 
 
 public class MyServerDataRecyclerViewAdapter extends RecyclerView.Adapter<MyServerDataRecyclerViewAdapter.ViewHolder> {
@@ -43,7 +49,8 @@ public class MyServerDataRecyclerViewAdapter extends RecyclerView.Adapter<MyServ
                     s2 = CheckListActivity.applicantDataVO.getApplicantName();
                     break;
             case 1: s1="Vendor ID";
-                s2 = CheckListActivity.applicantDataVO.getVendorID();
+//                s2 = CheckListActivity.applicantDataVO.getVendorID();
+                s2 = SplashScreen.vendorID;
                 break;
             case 2: s1="Region";
                 s2 = CheckListActivity.applicantDataVO.getRegion();
@@ -58,10 +65,21 @@ public class MyServerDataRecyclerViewAdapter extends RecyclerView.Adapter<MyServ
                 s2 = CheckListActivity.applicantDataVO.getReferencedBy();
                 break;
             case 6: s1="Receipt Date";
-                s2 = CheckListActivity.applicantDataVO.getReceiptDate();
+                DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy, hh:mm aa", Locale.getDefault());
+                String outputDateStr;
+                try {
+                    Date date = inputFormat.parse(CheckListActivity.applicantDataVO.getReceiptDate());
+                    outputDateStr = outputFormat.format(date);
+//                    outputDateStr = "on " + outputDateStr;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    outputDateStr = "";
+                }
+                s2 = outputDateStr;
                 break;
-            case 7: s1="Document Type";
-                s2 = CheckListActivity.applicantDataVO.getDocumentType();
+            case 7: s1="Contact";
+                s2 = CheckListActivity.applicantDataVO.getContact();
                 break;
             case 8: s1="Investigation Category";
                 s2 = CheckListActivity.applicantDataVO.getInvCategory();
@@ -75,19 +93,18 @@ public class MyServerDataRecyclerViewAdapter extends RecyclerView.Adapter<MyServ
             case 11: s1="Status";
                 s2 = CheckListActivity.applicantDataVO.getStatus();
                 break;
+            default: holder.rLContent.setVisibility(View.GONE);
+                break;
         }
 
         holder.mIdView.setText(s1);
         holder.mContentView.setText(s2);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+        holder.mView.setOnClickListener(v -> {
+            if (null != mListener) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                mListener.onListFragmentInteraction(holder.mItem);
             }
         });
     }
@@ -102,12 +119,14 @@ public class MyServerDataRecyclerViewAdapter extends RecyclerView.Adapter<MyServ
         public final TextView mIdView;
         public final TextView mContentView;
         public ApplicantDataVO mItem;
+        public RelativeLayout rLContent;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.item_number);
             mContentView = (TextView) view.findViewById(R.id.content);
+            rLContent = view.findViewById(R.id.rLContent);
         }
 
         @Override

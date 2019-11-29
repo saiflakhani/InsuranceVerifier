@@ -24,6 +24,8 @@ public class IssuesFragment extends Fragment
         public IssuesFragment(){}
         static ArrayList<ApplicantDataVO> curList = new ArrayList<>();
         public static TaskAdapter adapter;
+        public static ListView lVTasks;
+        public static TextView textView;
         public SwipeRefreshLayout pullToRefresh;
         static int curPosition = 0;
         @Override
@@ -31,14 +33,14 @@ public class IssuesFragment extends Fragment
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             CheckListActivity.whichList = 1;
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             int position = getArguments().getInt("CurPos",0);
-            adapter = new TaskAdapter(curList,getActivity());
+            adapter = new TaskAdapter(curList, getActivity(), getActivity());
             pullToRefresh = (SwipeRefreshLayout)rootView.findViewById(R.id.pullToRefresh);
             pullToRefresh.setOnRefreshListener(pullToRefreshListener);
             //Log.v("LIST -->", "" + curList.size());
-            ListView lVTasks = rootView.findViewById(R.id.lVTasks);
+            lVTasks = rootView.findViewById(R.id.lVTasks);
             lVTasks.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             return rootView;

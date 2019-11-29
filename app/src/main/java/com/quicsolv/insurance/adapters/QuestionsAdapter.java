@@ -38,8 +38,6 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionDataVO> {
 
     }
 
-
-
     private int lastPosition = -1;
 
     @Override
@@ -72,23 +70,27 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionDataVO> {
             result=convertView;
         }
 
-        //Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
-        //result.startAnimation(animation);
         lastPosition = position;
         viewHolder.iVattempted.setVisibility(View.INVISIBLE);
 
         try {
-            viewHolder.tVquestionText.setText(s1.getQuestionText());
+            if (s1.getQuestionRequired().equalsIgnoreCase("Yes"))
+                viewHolder.tVquestionText.setText(s1.getQuestionText().concat("*"));
+            else {
+                viewHolder.tVquestionText.setText(s1.getQuestionText());
+            }
             viewHolder.eTAnswerText.setText(s1.getAnswer());
             if(!s1.getAnswer().equals(""))
             {
                 viewHolder.iVattempted.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.iVattempted.setVisibility(View.INVISIBLE);
             }
             //viewHolder.txtType.setText(QuestionDataVO.getType());
             //viewHolder.txtVersion.setText(QuestionDataVO.getVersion_number());
             //viewHolder.tVquestionText.setOnClickListener(this);
             //viewHolder.tVquestionText.setTag(position);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e){
             //Toast.makeText(getContext(),"An error occurred",Toast.LENGTH_SHORT).show();
             //e.printStackTrace();
         }

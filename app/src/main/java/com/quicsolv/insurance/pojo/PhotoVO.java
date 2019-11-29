@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
-public class PhotoVO implements Serializable{
+public class PhotoVO implements Serializable {
     String photo;
 
     public String getFileName() {

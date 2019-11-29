@@ -3,34 +3,41 @@ package com.quicsolv.insurance;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.quicsolv.insurance.apiCalls.ApiService;
 import com.quicsolv.insurance.apiCalls.RetrofitClient;
-import com.quicsolv.insurance.fragments.IssuesFragment;
-import com.quicsolv.insurance.fragments.PendingFragment;
 import com.quicsolv.insurance.fragments.PhotosFragment;
 import com.quicsolv.insurance.fragments.QuestionsFragment;
 import com.quicsolv.insurance.fragments.ServerDataFragment;
-import com.quicsolv.insurance.fragments.TasksFragment;
 import com.quicsolv.insurance.pojo.ApplicantDataVO;
+import com.quicsolv.insurance.pojo.PhotoList;
+import com.quicsolv.insurance.pojo.QuestionDataVO;
+import com.quicsolv.insurance.pojo.Time;
+import com.quicsolv.insurance.pojo.Vendor;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
+import io.reactivex.annotations.NonNull;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -46,22 +53,25 @@ public class CheckListActivity extends AppCompatActivity {
     public static int whichList = -1;
     ProgressDialog dialog;
     boolean showOnce = false;
+    private TabLayout tb;
     public static boolean photoTaken = false;
+    private int vendorPosition = 0;
+    public static ArrayList<PhotoList> photos = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_check_list);
         //List<Fragment> fragments = getFragments();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarlist);
+        Toolbar toolbar = findViewById(R.id.toolbarlist);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        tb = findViewById(R.id.tabLayoutCheckList);
         pageAdapter = new MyPageAdapter(getSupportFragmentManager());
-        TabLayout tb = findViewById(R.id.tabLayoutCheckList);
 
-        ViewPager pager =
-                (ViewPager)findViewById(R.id.chkListVp);
+        ViewPager pager = findViewById(R.id.chkListVp);
         pager.setAdapter(pageAdapter);
         tb.setupWithViewPager(pager);
         photoTaken = false;
@@ -73,10 +83,22 @@ public class CheckListActivity extends AppCompatActivity {
             Log.e("NO OBJ","NONE");
             e.printStackTrace();
         }
+
+        for (Vendor vendor: applicantDataVO.getVendors()) {
+            if (vendor.getVendorID().equals(SplashScreen.vendorID)) {
+                if(applicantDataVO.getVendors().get(applicantDataVO.getVendors().indexOf(vendor)).getVendorWork()!= null && applicantDataVO.getVendors().get(applicantDataVO.getVendors().indexOf(vendor)).getVendorWork().equals("Document Check")) {
+                    removeTab(1);
+                    vendorPosition = applicantDataVO.getVendors().indexOf(vendor);
+                    break;
+                }
+            }
+        }
+
+
         Button saveOnline = findViewById(R.id.btnsaveOnline);
         saveOnline.setOnClickListener(saveOnlineClick);
 
-//        Button submitTask = findViewById(R.id.btnSubmitTask);
+//        Button submitTask = findViewById(R.id.btnsaveOnline);
 //        submitTask.setOnClickListener(submitClick);
         //pager.setAdapter(pageAdapter);
     }
@@ -94,23 +116,20 @@ public class CheckListActivity extends AppCompatActivity {
 
     private boolean checkIfEverythingFilledUp()
     {
-        boolean flag = false;
-        try{
-            if((applicantDataVO.getQuestionsAsked().size() == QuestionsFragment.questionsList.size()) && QuestionsFragment.questionsList.size()!=0){
-                if(applicantDataVO.getPhotoList().size()>=1){
-                    flag=true;
-                }
+        boolean flag = true;
+        for (QuestionDataVO answeredQuestion: QuestionsFragment.questionsList) {
+            if (answeredQuestion.getQuestionRequired().equalsIgnoreCase("Yes") && answeredQuestion.getAnswer() == null) {
+                flag = false;
+                break;
             }
-        }catch (NullPointerException e)
-        {
+        }
+        if (CheckListActivity.photos.size() == 0) {
             flag = false;
         }
-
         return flag;
     }
 
     class MyPageAdapter extends FragmentPagerAdapter {
-        private List<Fragment> fragments;
         public MyPageAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -118,35 +137,46 @@ public class CheckListActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-
-            switch(position)
-            {
-                case 0: return ServerDataFragment.newInstance(applicantDataVO);
-                case 1: return QuestionsFragment.newInstance("Hello");
-                case 2: return PhotosFragment.newInstance("1","2");
-                default: return MainActivity.PlaceholderFragment.newInstance(0);
+            if (applicantDataVO.getVendors().get(vendorPosition).getVendorWork().equals("Document Check")) {
+                switch (position) {
+                    case 0:
+                        return ServerDataFragment.newInstance(applicantDataVO);
+                    case 1:
+                        return PhotosFragment.newInstance("1", "2");
+                    default:
+                        return MainActivity.PlaceholderFragment.newInstance(0);
+                }
+            } else {
+                switch (position) {
+                    case 0:
+                        return ServerDataFragment.newInstance(applicantDataVO);
+                    case 1:
+                        return QuestionsFragment.newInstance("Hello");
+                    case 2:
+                        return PhotosFragment.newInstance("1", "2");
+                    default:
+                        return MainActivity.PlaceholderFragment.newInstance(0);
+                }
             }
-            //return PlaceholderFragment.newInstance(position + 1);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             // Generate title based on item position
-            switch (position) {
-                case 0:
-                    return "Status";
-                case 1:
-                    return "Questions";
-                case 2:
-                    return "Photos";
-                default:
-                    return null;
+                switch (position) {
+                    case 0:
+                        return "Status";
+                    case 1:
+                        return "Questions";
+                    case 2:
+                        return "Photos";
+                    default:
+                        return null;
             }
         }
     }
@@ -160,7 +190,9 @@ public class CheckListActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 showOnce = true;
-                saveStuffToServer(true,true);
+                if (checkIfEverythingFilledUp()) {
+                    saveStuffToServer(true, true);
+                }
             }
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
@@ -175,6 +207,12 @@ public class CheckListActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    public void removeTab(int position) {
+        if (tb.getTabCount() >= 1 && position<tb.getTabCount()) {
+            tb.removeTabAt(position);
+        }
+    }
+
     private void showSubmitDialog(){
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Save Data");
@@ -183,9 +221,28 @@ public class CheckListActivity extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                applicantDataVO.setStatus("Verifier Submitted");
+                if (!applicantDataVO.getStatus().equals("Issues / On hold")) {
+                    applicantDataVO.setStatus("Verifier Submitted");
+                    Time time = applicantDataVO.getTime();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+                    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    time.setSubmittedByVerifier(sdf.format(new Date()));
+                    applicantDataVO.setTime(time);
+                } else {
+//                    Time time = applicantDataVO.getTime();
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+//                    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+//                    time.setPutOnHoldAt(sdf.format(new Date()));
+//                    applicantDataVO.setTime(time);
+                }
                 showOnce = true;
-                saveStuffToServer(true,true);
+                boolean status = saveStuffToServer(true, true);
+                if (status) {
+                    Toast.makeText(CheckListActivity.this, "Case submitted successfully", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    Toast.makeText(CheckListActivity.this, "Oops.. Something went wrong.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
@@ -196,7 +253,6 @@ public class CheckListActivity extends AppCompatActivity {
                 //finish();
             }
         });
-
         alertDialog.show();
     }
 
@@ -227,12 +283,22 @@ public class CheckListActivity extends AppCompatActivity {
     private View.OnClickListener saveOnlineClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            showSubmitDialog();
+            if (checkIfEverythingFilledUp()) { // || applicantDataVO.getStatus().equalsIgnoreCase("Issues / On hold")
+                showSubmitDialog();
+            } else {
+                final AlertDialog alertDialog = new AlertDialog.Builder(CheckListActivity.this).create();
+                alertDialog.setTitle("Incomplete Data");
+                alertDialog.setCancelable(false);
+                alertDialog.setMessage("Please answer all the required questions and upload all the required photos before continuing");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", (dialog, which) -> alertDialog.dismiss());
+                alertDialog.show();
+            }
         }
     };
 
-    public void saveStuffToServer(boolean saveData, boolean savePhotos)
+    public boolean saveStuffToServer(boolean saveData, boolean savePhotos)
     {
+        final boolean[] wasSaveSuccessful = {false};
         dialog = new ProgressDialog(CheckListActivity.this);
         dialog.setCancelable(true);
         dialog.setMessage("Uploading, please wait");
@@ -244,13 +310,17 @@ public class CheckListActivity extends AppCompatActivity {
             ApiService retroFit = RetrofitClient.getClient(MainActivity.BASE_URL).create(ApiService.class);
             retroFit.addAnswer(applicantDataVO).enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Log.d("OK SUCCESS", "" + response.body());
-                    dialog.dismiss();
+                public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        wasSaveSuccessful[0] = true;
+                        Log.d("OK SUCCESS", "" + response.body());
+                        dialog.dismiss();
+                    }
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                    wasSaveSuccessful[0] = true;
                     Log.e("FAILuRE", "" + t.getMessage());
                     dialog.dismiss();
                 }
@@ -259,12 +329,14 @@ public class CheckListActivity extends AppCompatActivity {
         if(savePhotos) {
             dialog.show();
             showOnce = true;
-            if(applicantDataVO.getPhotoList() != null) {
-                for (int i = 0; i < applicantDataVO.getPhotoList().size(); i++) {
-                    uploadPhotoToServer(applicantDataVO.getPhotoList().get(i).getLocalPath(), i);
-                }
-            }
+//            if(applicantDataVO.getPhotoList() != null) {
+//                for (int i = 0; i < applicantDataVO.getPhotoList().size(); i++) {
+////                    uploadPhotoToServer(applicantDataVO.getPhotoList().get(i).getLocalPath(), i);
+//                }
+//            }
+            wasSaveSuccessful[0] = true;
         }
+        return wasSaveSuccessful[0];
     }
 
 

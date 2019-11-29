@@ -15,23 +15,22 @@
         android:textColor="#000"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:visibility="gone"
         android:id="@+id/spinnerHeader"
-        android:text="Change applicant status : "
-        />
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/spinnerHeader"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:id="@+id/spinnerStatus"
-        android:layout_marginBottom="10dp"
-        ></Spinner>
+        android:text="Change applicant status: " />
+<!--    <Spinner-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/spinnerHeader"-->
+<!--        android:layout_marginLeft="16dp"-->
+<!--        android:layout_marginRight="16dp"-->
+<!--        android:id="@+id/spinnerStatus"-->
+<!--        android:layout_marginBottom="10dp" />-->
 
 
 <android.support.v7.widget.RecyclerView
     android:id="@+id/list"
-    android:layout_below="@+id/spinnerStatus"
+    android:layout_below="@+id/spinnerHeader"
     android:name="com.quicsolv.insurance.fragments.ServerDataFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

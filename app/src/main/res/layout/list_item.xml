@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rLListItem"
-    android:background="#000000">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:id="@+id/iVBack"
-        android:layout_height="match_parent"
-        android:alpha="0.7"/>
+    android:id="@+id/rLListItem">
 
     <TextView
         android:id="@+id/tVapplicantName"
@@ -18,49 +11,82 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_marginEnd="16dp"
+        android:textStyle="bold"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="#FFFFFF"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/black"
         android:textSize="25sp"
         tools:text="Raja Ram Mohan Roy" />
+
+    <TextView
+        android:id="@+id/tVPolicyNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tVapplicantName"
+        android:layout_alignLeft="@+id/tVapplicantName"
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
+        android:text="123456789"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/tVRegion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tVapplicantName"
+        android:layout_below="@+id/tVPolicyNo"
         android:layout_alignLeft="@+id/tVapplicantName"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
         android:text="Pune"
-        android:textColor="#FFFFFF" />
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/tVpinCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tVRegion"
-        android:layout_alignLeft="@+id/tVRegion"
+        android:layout_marginLeft="40dp"
+        android:textSize="16sp"
+        android:layout_alignBottom="@id/tVRegion"
+        android:layout_toRightOf="@+id/tVRegion"
         android:text="411006"
-        android:textColor="#FFFFFF" />
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/docType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tVRegion"
-        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tVRegion"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:ellipsize="end"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/docPriority"
+        android:layout_marginBottom="10dp"
         android:text="Open Check / A / B4"
-        android:textColor="#FFFFFF"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/docPriority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tVRegion"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
+        android:text="Priority: High"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

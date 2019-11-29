@@ -20,15 +20,15 @@
     <ImageView
         android:layout_below="@id/toolbarshowphoto"
         android:id="@+id/iVshowImage"
-        android:layout_margin="20dp"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:src="@mipmap/ic_launcher_round"
-        android:layout_height="300dp" />
+        android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_below="@+id/iVshowImage"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_margin="20dp"
         android:text="Image Description"
         android:textSize="20sp"

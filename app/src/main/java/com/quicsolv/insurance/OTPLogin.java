@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class OTPLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_otplogin);
         findViews();
         StartFirebaseLogin();
@@ -47,8 +49,9 @@ public class OTPLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 phoneNumber = etPhoneNumber.getText().toString();
+                phoneNumber = "+91" + phoneNumber;
+                SplashScreen.phoneNumber = phoneNumber;
                 if (checkPhoneNumber(phoneNumber)) {
-                    phoneNumber = "+91" + phoneNumber;
                     PhoneAuthProvider.getInstance().verifyPhoneNumber(
                             phoneNumber,                     // Phone number to verify
                             20,                           // Timeout duration
@@ -77,8 +80,8 @@ public class OTPLogin extends AppCompatActivity {
         boolean authorized = false;
         if(m.matches()){
             //ProgressDialog dialog = ProgressDialog.show(this,"Please wait, authenticating",)
-            Log.d("VERIFIER LIST",SplashScreen.verifierList.toString());
-            if(SplashScreen.verifierList!=null && SplashScreen.verifierList.size()>0) {
+            if(SplashScreen.verifierList != null && SplashScreen.verifierList.size()>0) {
+                Log.d("VERIFIER LIST",SplashScreen.verifierList.toString());
                 for (Verifier v : SplashScreen.verifierList) {
                     if (phoneNumber.contains(v.getContact())) {
                         vendorID = v.getVendorAffiliation();
@@ -144,7 +147,10 @@ public class OTPLogin extends AppCompatActivity {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                 }
-
+                Toast.makeText(OTPLogin.this,"Verification Completed",Toast.LENGTH_SHORT).show();
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
             }
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {

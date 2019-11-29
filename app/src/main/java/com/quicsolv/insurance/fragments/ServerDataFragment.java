@@ -2,26 +2,18 @@ package com.quicsolv.insurance.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.quicsolv.insurance.CheckListActivity;
 import com.quicsolv.insurance.R;
 import com.quicsolv.insurance.adapters.MyServerDataRecyclerViewAdapter;
 import com.quicsolv.insurance.pojo.ApplicantDataVO;
-import com.quicsolv.insurance.pojo.QuestionDataVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +25,8 @@ import java.util.List;
  * interface.
  */
 public class ServerDataFragment extends Fragment {
-    List<String> statuses;
-    Spinner spinner;
+//    List<String> statuses;
+//    Spinner spinner;
     static boolean savedOnce;
 
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -96,41 +88,43 @@ public class ServerDataFragment extends Fragment {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
         recyclerView.setAdapter(new MyServerDataRecyclerViewAdapter(myList, mListener));
-        spinner = view.findViewById(R.id.spinnerStatus);
+//        spinner = view.findViewById(R.id.spinnerStatus);
 
-        statuses = new ArrayList<String>();
+//        statuses = new ArrayList<String>();
+//
+//        statuses.add("Pending / Created");
+//        statuses.add("Issues / On hold");
+//        //statuses.add("Completed");
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, statuses);
+//        spinner.setAdapter(dataAdapter);
 
-        statuses.add("Pending / Created");
-        statuses.add("Issues / On hold");
-        //statuses.add("Completed");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, statuses);
-        spinner.setAdapter(dataAdapter);
 
-
-        spinner.setOnItemSelectedListener(spinnerListener);
-        setSpinnerSelection();
+//        spinner.setOnItemSelectedListener(spinnerListener);
+//        setSpinnerSelection();
         return view;
     }
 
 
-    private void setSpinnerSelection()
-    {
-        String status = CheckListActivity.applicantDataVO.getStatus();
-        if (status.startsWith("Pending") || status.startsWith("Created")) {
-            spinner.setSelection(0);
-        } else if (status.startsWith("On") || status.startsWith("Issues")) {
-            //Log.d("Created task","Found");
-            spinner.setSelection(1);
-        } else {
-            spinner.setSelection(0);
-        }
-    }
+//    private void setSpinnerSelection()
+//    {
+//        String status = CheckListActivity.applicantDataVO.getStatus();
+//        if (status.startsWith("Pending") || status.startsWith("Created")) {
+//            spinner.setSelection(0);
+//        } else if (status.startsWith("On") || status.startsWith("Issues")) {
+//            //Log.d("Created task","Found");
+//            spinner.setSelection(1);
+//        } else {
+//            spinner.setSelection(0);
+//        }
+//    }
     private AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            String currentStatus = statuses.get(position);
-            CheckListActivity.applicantDataVO.setStatus(currentStatus);
-            CheckListActivity activity = (CheckListActivity)getActivity();
+//            String currentStatus = statuses.get(position);
+//            if (!currentStatus.equalsIgnoreCase("Pending / Created")) {
+//                CheckListActivity.applicantDataVO.setStatus(currentStatus);
+//                CheckListActivity activity = (CheckListActivity) getActivity();
+//            }
             //activity.saveStuffToServer(true,false);
         }
 
@@ -158,16 +152,6 @@ public class ServerDataFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(ApplicantDataVO item);

@@ -1,6 +1,7 @@
 package com.quicsolv.insurance.apiCalls;
 
 import com.quicsolv.insurance.pojo.ApplicantDataVO;
+import com.quicsolv.insurance.pojo.PhotoUploadResponse;
 import com.quicsolv.insurance.pojo.QuestionDataVO;
 import com.quicsolv.insurance.pojo.Verifier;
 
@@ -30,15 +31,16 @@ public interface ApiService {
     @POST("upload")
     Call<ResponseBody> uploadPhoto(@Part MultipartBody.Part photo);
 
-
     @POST("addanswer")
     Call<ResponseBody> addAnswer(@Body ApplicantDataVO body);
 
     @GET("verifierlist")
     Call<List<Verifier>> getVerifierList();
 
-    @GET("/vendorclientlist")
-    Call<List<ApplicantDataVO>> getVendorClientList(@Query("v") String vendorID);
+    @GET("verifierclientlist")
+    Call<List<ApplicantDataVO>> getVendorClientList(@Query("mobileNum") String number);
 
-
+    @Multipart
+    @POST("verification_image")
+    Call<PhotoUploadResponse> postPhoto(@Query("uniqueId") String uniqueId, @Query("description") String description, @Part MultipartBody.Part file);
 }
